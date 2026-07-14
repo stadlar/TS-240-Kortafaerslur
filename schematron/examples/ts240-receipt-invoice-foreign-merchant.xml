@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:fdc:stadlar.is:kort:1.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:stadlar.is:ts240:1.0</cbc:ProfileID>
+  <cbc:ID>75000002211300066666666</cbc:ID>
+  <cbc:IssueDate>2026-03-17</cbc:IssueDate>
+  <cbc:InvoiceTypeCode>461</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>ISK</cbc:DocumentCurrencyCode>
+  <cac:OrderReference>
+    <cbc:ID>Fjártæknilausnin</cbc:ID>
+  </cac:OrderReference>
+  <cac:BillingReference>
+    <cac:InvoiceDocumentReference>
+      <cbc:ID>25 USD</cbc:ID>
+    </cac:InvoiceDocumentReference>
+  </cac:BillingReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0196">9090909090</cbc:EndpointID>
+      <cac:PartyName>
+        <cbc:Name>FOREIGN MERCHANT INC</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cac:Country>
+          <cbc:IdentificationCode>US</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>DK12345678</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>FOREIGN MERCHANT INC</cbc:RegistrationName>
+        <cbc:CompanyID>0</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0196">5502694429</cbc:EndpointID>
+      <cac:PartyName>
+        <cbc:Name>Kaupfyrirtækið ehf.</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cac:Country>
+          <cbc:IdentificationCode>IS</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Kaupfyrirtækið ehf.</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="0196">5502694429</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode name="CHIP">54</cbc:PaymentMeansCode>
+    <cac:CardAccount>
+      <cbc:PrimaryAccountNumberID>542418******1234</cbc:PrimaryAccountNumberID>
+      <cbc:NetworkID>VISA</cbc:NetworkID>
+    </cac:CardAccount>
+  </cac:PaymentMeans>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="ISK">1200</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="ISK">5000</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="ISK">1200</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>24</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="ISK">5000</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="ISK">5000</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="ISK">6200</cbc:TaxInclusiveAmount>
+    <cbc:PrepaidAmount currencyID="ISK">6200</cbc:PrepaidAmount>
+    <cbc:PayableAmount currencyID="ISK">0</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="ISK">5000</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>Vörukaup erlendis</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>24</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="ISK">5000</cbc:PriceAmount>
+    </cac:Price>
+  </cac:InvoiceLine>
+</Invoice>
