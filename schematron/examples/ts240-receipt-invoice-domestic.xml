@@ -16,7 +16,6 @@
        an open item for Staðlaráð/FJS. -->
   <cac:OrderReference>
     <cbc:ID>Fjártæknilausnin</cbc:ID>
-    <cbc:SalesOrderID>so234</cbc:SalesOrderID>
   </cac:OrderReference>
   <cac:AdditionalDocumentReference>
     <cbc:ID>1</cbc:ID>

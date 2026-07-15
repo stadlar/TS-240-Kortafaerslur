@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TS240 card-transaction receipt with a FOREIGN merchant, document currency EUR.
+     Demonstrates that BT-5 need not be ISK: a company whose card settles in another currency can
+     use the profile. The document is denominated in EUR (no separate "original" currency, so no
+     BT-25 BillingReference), and EUR amounts may carry decimals (TS240-R-004 forbids decimals only
+     for ISK). Foreign seller with no tax identifier ⇒ VAT category O (see minimal-foreign). -->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:fdc:stadlar.is:kort:1.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:stadlar.is:ts240:1.0</cbc:ProfileID>
+  <cbc:ID>75000002211300077777777</cbc:ID>
+  <cbc:IssueDate>2026-03-18</cbc:IssueDate>
+  <cbc:InvoiceTypeCode>461</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+  <cac:OrderReference>
+    <cbc:ID>Fjártæknilausnin</cbc:ID>
+  </cac:OrderReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0196">9090909090</cbc:EndpointID>
+      <cac:PostalAddress>
+        <cac:Country>
+          <cbc:IdentificationCode>DE</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>FOREIGN MERCHANT</cbc:RegistrationName>
+        <cbc:CompanyID>0</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0196">5502694429</cbc:EndpointID>
+      <cac:PostalAddress>
+        <cac:Country>
+          <cbc:IdentificationCode>IS</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Kaupfyrirtækið ehf.</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="0196">5502694429</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode name="CHIP">54</cbc:PaymentMeansCode>
+    <cac:CardAccount>
+      <cbc:PrimaryAccountNumberID>542418******1234</cbc:PrimaryAccountNumberID>
+      <cbc:NetworkID>VISA</cbc:NetworkID>
+    </cac:CardAccount>
+  </cac:PaymentMeans>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="EUR">49.90</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>O</cbc:ID>
+        <cbc:TaxExemptionReason>Outside scope of Icelandic VAT</cbc:TaxExemptionReason>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="EUR">49.90</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="EUR">49.90</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="EUR">49.90</cbc:TaxInclusiveAmount>
+    <cbc:PrepaidAmount currencyID="EUR">49.90</cbc:PrepaidAmount>
+    <cbc:PayableAmount currencyID="EUR">0.00</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">49.90</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>Vörukaup erlendis</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>O</cbc:ID>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="EUR">49.90</cbc:PriceAmount>
+    </cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

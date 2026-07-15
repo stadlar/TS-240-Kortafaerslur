@@ -27,13 +27,14 @@ sem stóðst ekki. Niðurstöður eru annaðhvort:
 - **Viðvaranir** — kvittunin er samþykkt en yfirfara ætti eitthvað.
 
 **Einnig í möppunni:**
-- `examples/` — átta tilbúnar kvittanir, ein fyrir hverja sviðsmynd, sem allar standast án villu:
+- `examples/` — níu tilbúnar kvittanir, ein fyrir hverja sviðsmynd, sem allar standast án villu:
   - `…-domestic` — íslenskur seljandi, staðlað 24 % VSK.
   - `…-domestic-novat` — íslenskur seljandi þar sem VSK er ekki sundurliðaður (t.d. óendurkræf
     veitingakaup).
   - `…-multiline` — margar línur með blönduðum VSK-þrepum.
   - `…-ecommerce` — netverslun / kort ekki til staðar.
-  - `…-foreign-merchant` — erlendur seljandi, upphaflega upphæðin skráð í BT-25.
+  - `…-foreign-merchant` — erlendur seljandi, kvittun í ISK, upphaflega upphæðin skráð í BT-25.
+  - `…-eur` — erlendur seljandi, kvittun í erlendum gjaldmiðli (EUR, með aukastöfum).
   - `…-minimal` / `…-minimal-foreign` — minnsta gilda innlenda / erlenda kvittunin.
   - `…-creditnote-return` — endurgreiðsla á kort (kreditreikningur).
 - `ts240-schematron-adaptations.md` — frávikaskrá: nákvæm útlistun reglu fyrir reglu að baki „Útfærslu“
@@ -64,20 +65,33 @@ athuganir bætast ofan á. Þeim er skipt eftir því hvernig þær tengjast TS 
 Framfylgt nákvæmlega eins og TS 240 kveður á um:
 - Skjalið er kortafærslukvittun (**tegund 461**).
 - Það er **greitt með korti** og **greiðsluupphæðin er núll** (þegar uppgert).
-- **ISK-upphæðir bera enga aukastafi** (venjulegur tugatölureitur, svo `1000.00` er samþykkt).
+- **Gjaldmiðill skjalsins (BT-5) má vera hvaða gildur gjaldmiðill sem er** — venjulega ISK, en annar
+  gjaldmiðill er samþykktur fyrir fyrirtæki sem gera upp kortin sín erlendis.
+- **Í ISK bera upphæðir enga aukastafi** (aðrir gjaldmiðlar mega; venjulegur tugatölureitur, svo
+  `1000.00` er samþykkt).
 - Viðhengd kvittanamynd/PDF helst innan **stærðar- og skráarnafnsmarka**.
-- Fyrir **erlendan seljanda** ætti að skrá upphaflega upphæð og gjaldmiðil.
+- Fyrir **erlendan seljanda þegar kvittunin er í ISK** ætti að skrá upphaflega upphæð og gjaldmiðil
+  (BT-25).
 - Allar hefðbundnar reikningsathuganir gilda — samtölur stemma, VSK er rétt reiknaður, kóðar eru gildir
   og skylduaðilar til staðar.
 
 ### Viðbótarkröfur
 Aðeins strangari en orðalag draganna, til að halda gögnunum hreinum og samræmdum:
-- **Gjaldmiðillinn er alltaf ISK** (drögin segja „usually“).
 - **Tilvísun sendanda (fjártækniaðila) verður að vera til staðar** — frjáls texti sem geymir nafn
   fjártækniaðilans (t.d. „Fjártæknilausnin“); ef hana vantar er það tilkynnt skýrt.
 - **Hvernig kortið var notað** (*POS entry mode*) er valfrjálst, en ef það er tilgreint ætti það að vera
   eitt af stuttum stöðluðum lista (`MANUAL`, `MAGSTRIPE`, `CHIP`, `CONTACTLESS`, `ECOMMERCE`, `MOTO`,
   `STORED`); annað gefur viðvörun.
+
+### Reitir utan prófílsins (viðvaranir)
+TS 240 notar afmarkað hlutmengi EN 16931. Þegar kvittun ber reit sem prófíllinn notar ekki gefur
+**viðvörun** (aldrei villa) sendanda til kynna að hann verði líklega hunsaður. Þetta nær yfir
+**gjalddaga** (BT-9 — færslan er þegar uppgerð), **athugasemd skjals**, **greiðsluskilmála**,
+**reikningstímabil**, **afhendingarupplýsingar**, tilvísanir utan gildissviðs (samning, verkefni,
+sölupöntun, sendingu, móttöku, útboð), **greiðsluviðtakanda** eða **skattfulltrúa**, greiðsluupplýsingar
+utan korts (bankareikning eða beingreiðsluumboð) og **skattadagsetningu / VSK-bókhaldsmynt**. Upphæðir
+sem hafa raunveruleg áhrif á heildartölur (afslættir og gjöld) eru **ekki** merktar, og ekki heldur
+tilvísun kaupanda (notuð hér sem kostnaðarstaður).
 
 ### Frávik frá drögunum
 Þar sem drög v0.4 stangast á við evrópska staðalinn fylgja reglurnar staðlinum (og það er tilkynnt
@@ -91,7 +105,7 @@ Staðlaráði):
 - Kortafærslu-skjalategundin **461 er samþykkt**.
 - **Möskunarathugun kortanúmers samþykkir tákn-maskað númer.**
 - Fáeinar **íslenskar reikningsathuganir sem eiga ekki við kortakvittanir** (götuheiti/póstnúmer,
-  gjalddagi) eru gerðar óvirkar.
+  eindagi) eru gerðar óvirkar.
 
 ### Tillögur fyrir v0.5 — óútfært
 Ekki útfært; tillögur til Staðlaráðs / FJS:
@@ -121,11 +135,19 @@ Sértækar kortafærsluathuganir (ofan á áðurgildandi EN 16931 / Peppol reglu
 | TS240-R-004 | ISK-upphæðir beri enga aukastafi | Fylgir forskrift | Villa |
 | TS240-R-005 | viðhengt skjal sé í mesta lagi 5 MB | Fylgir forskrift | Villa |
 | TS240-R-006 | skráarnafn viðhengis sé í mesta lagi 255 stafir | Fylgir forskrift | Villa |
-| TS240-R-007 | erlendur seljandi skrái upphaflega upphæð og gjaldmiðil | Fylgir forskrift | Viðvörun |
+| TS240-R-007 | erlendur seljandi með kvittun í ISK skrái upphaflega upphæð og gjaldmiðil | Fylgir forskrift | Viðvörun |
 | TS240-R-008 | seljandi án VSK-númers noti flokkinn „utan gildissviðs VSK“ | Frávik | Villa |
-| TS240-R-009 | gjaldmiðill skjalsins sé ISK | Viðbótarkrafa | Villa |
 | TS240-R-010 | tilvísun sendanda (fjártækniaðila) sé til staðar | Viðbótarkrafa | Villa |
 | TS240-R-011 | POS entry mode (hvernig kortið var notað), ef tilgreint, sé eitt af stöðluðu gildunum | Viðbótarkrafa | Viðvörun |
+| TS240-R-012 | enginn gjalddagi (BT-9) sé til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-013 | engin athugasemd skjals (BT-22) sé til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-014 | engir greiðsluskilmálar (BT-20) séu til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-015 | ekkert reikningstímabil (BG-14) sé til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-016 | engar afhendingarupplýsingar (BG-13) séu til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-017 | engin tilvísun utan gildissviðs (samningur/verkefni/pöntun/sending/móttaka/útboð) sé til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-018 | enginn greiðsluviðtakandi eða skattfulltrúi sé til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-019 | engar greiðsluupplýsingar utan korts (bankareikningur / umboð) séu til staðar | Utan gildissviðs | Viðvörun |
+| TS240-R-020 | engin skattadagsetning / VSK-bókhaldsmynt sé til staðar | Utan gildissviðs | Viðvörun |
 
 ## Þekja forskriftar
 
@@ -137,7 +159,7 @@ Sértækar kortafærsluathuganir (ofan á áðurgildandi EN 16931 / Peppol reglu
 |---|---|---|
 | BT-2 — Útgáfudagur | BR-02 (dagsetning skylda; „= færsludagsetning“ er gagnakrafa) | Fyrirliggjandi |
 | BT-3 — Tegundarkóði 461 | TS240-R-001 + BR-CL-01 | Ný |
-| BT-5 — Gjaldmiðill (ISK) | TS240-R-009 + BR-CL-04 | Ný |
+| BT-5 — Gjaldmiðill (venjulega ISK) | BR-CL-04 | Fyrirliggjandi |
 | BT-18-1 — Kóðakerfi hlutaauðkennis | BR-CL-07 (UNTDID 1153) | Fyrirliggjandi |
 | BT-23 — Rekstrarferli | PEPPOL-EN16931-R001 / R007 | Fyrirliggjandi |
 | BT-24 — Forskriftarauðkenni | PEPPOL-EN16931-R004 | Fyrirliggjandi |
@@ -170,6 +192,15 @@ Sértækar kortafærsluathuganir (ofan á áðurgildandi EN 16931 / Peppol reglu
 | BT-25 — Erlend upphæð upprunans | TS240-R-007 (viðvörun) | Viðbót |
 | VSK-flokkur O (seljandi án VSK-númers) | TS240-R-008 | Viðbót |
 | BT-82 — POS entry mode (hvernig kortið var notað) | TS240-R-011 (viðvörun) | Viðbót |
+| BT-9 — Gjalddagi (utan gildissviðs) | TS240-R-012 (viðvörun) | Viðbót |
+| BT-22 — Athugasemd skjals (utan gildissviðs) | TS240-R-013 (viðvörun) | Viðbót |
+| BT-20 — Greiðsluskilmálar (utan gildissviðs) | TS240-R-014 (viðvörun) | Viðbót |
+| BG-14 — Reikningstímabil (utan gildissviðs) | TS240-R-015 (viðvörun) | Viðbót |
+| BG-13 — Afhending (utan gildissviðs) | TS240-R-016 (viðvörun) | Viðbót |
+| BT-11/12/14/15/16/17 — Tilvísanir utan gildissviðs | TS240-R-017 (viðvörun) | Viðbót |
+| BG-10/11 — Greiðsluviðtakandi / skattfulltrúi (utan gildissviðs) | TS240-R-018 (viðvörun) | Viðbót |
+| BT-84/89 — Greiðsluupplýsingar utan korts | TS240-R-019 (viðvörun) | Viðbót |
+| BT-6/7 — VSK-bókhaldsmynt / skattadagsetning (utan gildissviðs) | TS240-R-020 (viðvörun) | Viðbót |
 
 ---
 

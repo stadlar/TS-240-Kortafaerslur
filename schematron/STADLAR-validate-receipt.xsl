@@ -3881,16 +3881,16 @@
 
 		    <!--ASSERT -->
       <xsl:choose>
-         <xsl:when test="$SupplierCountry = 'IS' or exists(cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID)"/>
+         <xsl:when test="$SupplierCountry = 'IS' or normalize-space(cbc:DocumentCurrencyCode) != 'ISK' or exists(cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID)"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="$SupplierCountry = 'IS' or exists(cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID)">
+                                test="$SupplierCountry = 'IS' or normalize-space(cbc:DocumentCurrencyCode) != 'ISK' or exists(cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID)">
                <xsl:attribute name="id">TS240-R-007</xsl:attribute>
                <xsl:attribute name="flag">warning</xsl:attribute>
                <xsl:attribute name="location">
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
-               <svrl:text>[TS240-R-007]-For a foreign seller the original amount and currency should be given in BT-25 (cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID, e.g. "25 USD") — Fyrir erlendan seljanda ætti að tilgreina upphæð og gjaldmiðil upprunans í BT-25.</svrl:text>
+               <svrl:text>[TS240-R-007]-For a foreign seller whose receipt is in ISK, the original amount and currency should be given in BT-25 (cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID, e.g. "25 USD") — Fyrir erlendan seljanda þegar kvittun er í ISK ætti að tilgreina upphæð og gjaldmiðil upprunans í BT-25.</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
@@ -3907,22 +3907,6 @@
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
                <svrl:text>[TS240-R-008]-Seller has no VAT/tax identifier, so every VAT category must be 'O' (not subject to VAT) — Seljandi hefur ekkert VSK-/skattnúmer, því skal nota VSK-flokk 'O' (utan gildissviðs) á öllum línum og í VSK-sundurliðun.</svrl:text>
-            </svrl:failed-assert>
-         </xsl:otherwise>
-      </xsl:choose>
-
-      <!--ASSERT -->
-      <xsl:choose>
-         <xsl:when test="normalize-space(cbc:DocumentCurrencyCode) = 'ISK'"/>
-         <xsl:otherwise>
-            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="normalize-space(cbc:DocumentCurrencyCode) = 'ISK'">
-               <xsl:attribute name="id">TS240-R-009</xsl:attribute>
-               <xsl:attribute name="flag">fatal</xsl:attribute>
-               <xsl:attribute name="location">
-                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
-               </xsl:attribute>
-               <svrl:text>[TS240-R-009]-Document currency (BT-5) MUST be ISK for card transactions; a foreign original amount goes in BT-25 — Gjaldmiðill skjals (BT-5) skal vera ISK fyrir kortafærslur; erlend upphæð upprunans fer í BT-25.</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
@@ -4066,6 +4050,132 @@
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE ts240-out-of-scope: field present but outside the profile ⇒ warning (location = the field) -->
+   <xsl:template match="cbc:DueDate" priority="1000" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cbc:DueDate"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-012</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-012]-A payment due date (BT-9) is out of scope for a settled card transaction and should be omitted — Gjalddagi (BT-9) á ekki við um uppgerða kortafærslu og ætti að sleppa.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="ubl-invoice:Invoice/cbc:Note | ubl-creditnote:CreditNote/cbc:Note" priority="999" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="ubl-invoice:Invoice/cbc:Note | ubl-creditnote:CreditNote/cbc:Note"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-013</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-013]-A document note (BT-22) is outside the TS 240 card-receipt profile and will most likely be ignored — Athugasemd skjals (BT-22) er utan TS 240 prófílsins og verður líklega hunsuð.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cac:PaymentTerms" priority="998" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cac:PaymentTerms"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-014</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-014]-Payment terms (BT-20) are outside the TS 240 card-receipt profile and will most likely be ignored — Greiðsluskilmálar (BT-20) eru utan TS 240 prófílsins og verða líklega hunsaðir.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cac:InvoicePeriod" priority="997" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cac:InvoicePeriod"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-015</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-015]-An invoicing period (BG-14) is outside the TS 240 card-receipt profile and will most likely be ignored — Reikningstímabil (BG-14) er utan TS 240 prófílsins og verður líklega hunsað.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cac:Delivery" priority="996" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cac:Delivery"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-016</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-016]-Delivery information (BG-13) is outside the TS 240 card-receipt profile and will most likely be ignored — Afhendingarupplýsingar (BG-13) eru utan TS 240 prófílsins og verða líklega hunsaðar.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cac:ContractDocumentReference | cac:ProjectReference | cac:DespatchDocumentReference | cac:ReceiptDocumentReference | cac:OriginatorDocumentReference | cac:OrderReference/cbc:SalesOrderID" priority="995" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cac:ContractDocumentReference | cac:ProjectReference | cac:DespatchDocumentReference | cac:ReceiptDocumentReference | cac:OriginatorDocumentReference | cac:OrderReference/cbc:SalesOrderID"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-017</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-017]-This reference (contract / project / sales order / despatch / receipt / tender, BT-11/12/14/15/16/17) is outside the TS 240 card-receipt profile and will most likely be ignored — Þessi tilvísun er utan TS 240 prófílsins og verður líklega hunsuð.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cac:PayeeParty | cac:TaxRepresentativeParty" priority="994" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cac:PayeeParty | cac:TaxRepresentativeParty"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-018</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-018]-This party (payee BG-10 / tax representative BG-11) is outside the TS 240 card-receipt profile and will most likely be ignored — Þessi aðili (greiðsluviðtakandi / skattfulltrúi) er utan TS 240 prófílsins og verður líklega hunsaður.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cac:PaymentMeans/cac:PayeeFinancialAccount | cac:PaymentMeans/cac:PaymentMandate" priority="993" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cac:PaymentMeans/cac:PayeeFinancialAccount | cac:PaymentMeans/cac:PaymentMandate"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-019</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-019]-Non-card payment details (bank account BT-84 / direct-debit mandate BT-89) are outside the TS 240 card-receipt profile and will most likely be ignored — Greiðsluupplýsingar utan korts (bankareikningur / umboð) eru utan TS 240 prófílsins og verða líklega hunsaðar.</svrl:text>
+      </svrl:failed-assert>
+      <xsl:apply-templates select="@*|*" mode="M43"/>
+   </xsl:template>
+
+	  <!--RULE -->
+   <xsl:template match="cbc:TaxPointDate | cbc:TaxCurrencyCode" priority="992" mode="M43">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="cbc:TaxPointDate | cbc:TaxCurrencyCode"/>
+      <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="false()">
+         <xsl:attribute name="id">TS240-R-020</xsl:attribute>
+         <xsl:attribute name="flag">warning</xsl:attribute>
+         <xsl:attribute name="location">
+            <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+         </xsl:attribute>
+         <svrl:text>[TS240-R-020]-This tax field (tax point date BT-7 / VAT accounting currency BT-6) is outside the TS 240 card-receipt profile and will most likely be ignored — Þessi skattareitur (skattadagsetning / VSK-bókhaldsmynt) er utan TS 240 prófílsins og verður líklega hunsaður.</svrl:text>
+      </svrl:failed-assert>
       <xsl:apply-templates select="@*|*" mode="M43"/>
    </xsl:template>
    <xsl:template match="text()" priority="-1" mode="M43"/>
