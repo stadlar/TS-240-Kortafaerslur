@@ -46,8 +46,9 @@ sem stóðst ekki. Niðurstöður eru annaðhvort:
 [Staðlaráðs-málaskránni](https://github.com/stadlar/TS-240-Kortafaerslur/issues) og hafa áhrif á
 sannprófun:
 
-- **Greiðslumátakóði** — kvittanirnar nota `54` (kreditkort); eldri tafla FJS notaði `48`
-  (greiðslukort). Velja þarf annað gildið, eða leyfa bæði. *(Staðlaráðs-mál #5.)*
+- **Greiðslumátakóði** — kvittanirnar nota `48` (greiðslukort), gildi FJS: almenni kortakóðinn sem nær
+  yfir bæði kredit- og debetkort. Drögin tilgreina `58`, millifærslukóða sem á ekki við um
+  kortagreiðslu. *(Staðlaráðs-mál #5.)*
 - **Möskun kortanúmers** — staðfesta þarf nákvæmt möskunarform (t.d. `542418******1234`). *(Mál #10.)*
 - **Nafn og kennitala korthafa** — staðallinn hefur enn engan reit fyrir þessi gildi. Tillaga okkar:
   setja **nafn** korthafa í nafnreit kortareiknings (BT-88) og **kennitölu** korthafa í hlutaauðkenni
@@ -96,7 +97,8 @@ tilvísun kaupanda (notuð hér sem kostnaðarstaður).
 ### Frávik frá drögunum
 Þar sem drög v0.4 stangast á við evrópska staðalinn fylgja reglurnar staðlinum (og það er tilkynnt
 Staðlaráði):
-- **Greiðslumátakóðinn er 54**, ekki 58 (58 er ekki kortakóði og fellur á staðalreglu).
+- **Greiðslumátakóðinn er 48** (greiðslukort, að tillögu FJS — nær yfir kredit- og debetkort), ekki 58
+  (58 er millifærslukóði, ekki kortakóði, og fellur á staðalreglu).
 - **Lægra VSK-þrepið er staðalflokkurinn með 11 %**, ekki sérstakur „AA“-kóði (sem evrópski staðallinn
   leyfir ekki).
 - Þegar seljandi hefur **ekkert VSK-númer** — erlendur seljandi, eða innlend kvittun sem sundurliðar ekki
@@ -130,7 +132,7 @@ Sértækar kortafærsluathuganir (ofan á áðurgildandi EN 16931 / Peppol reglu
 | Regla | Athugar að… | Flokkur | Alvarleiki |
 |---|---|---|---|
 | TS240-R-001 | skjalategundin sé 461 (kortafærslukvittun) | Fylgir forskrift | Villa |
-| TS240-R-002 | greiðslukóðinn sé 54 (kreditkort) | Frávik | Villa |
+| TS240-R-002 | greiðslukóðinn sé 48 (greiðslukort) | Frávik | Villa |
 | TS240-R-003 | greiðsluupphæðin sé núll | Fylgir forskrift | Villa |
 | TS240-R-004 | ISK-upphæðir beri enga aukastafi | Fylgir forskrift | Villa |
 | TS240-R-005 | viðhengt skjal sé í mesta lagi 5 MB | Fylgir forskrift | Villa |

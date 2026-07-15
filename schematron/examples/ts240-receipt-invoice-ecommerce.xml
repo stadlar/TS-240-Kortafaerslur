@@ -52,7 +52,7 @@
     </cac:Party>
   </cac:AccountingCustomerParty>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode name="ECOMMERCE">54</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode name="ECOMMERCE">48</cbc:PaymentMeansCode>
     <cac:CardAccount>
       <cbc:PrimaryAccountNumberID>552418******9876</cbc:PrimaryAccountNumberID>
       <cbc:NetworkID>MASTERCARD</cbc:NetworkID>

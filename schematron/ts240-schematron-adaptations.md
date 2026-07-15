@@ -39,7 +39,7 @@ Implemented by adapting `PEPPOL-EN16931-R004` (customization), `PEPPOL-EN16931-R
 | ID | Severity | Business term | Rule |
 |---|---|---|---|
 | TS240-R-001 | fatal | BT-3 | Document type code must be **461** |
-| TS240-R-002 | fatal | BT-81 | Payment means code must be **54** (credit card) |
+| TS240-R-002 | fatal | BT-81 | Payment means code must be **48** (bank card — covers credit + debit) |
 | TS240-R-003 | fatal | BT-115 | Amount due for payment must be **0** |
 | TS240-R-004 | fatal | BT-106/109/110/112/113 | ISK document totals must have **no decimals** (numeric whole-number check) |
 | TS240-R-005 | fatal | BT-125 | Attached document must be **≤ 5 MB** of base64 content |

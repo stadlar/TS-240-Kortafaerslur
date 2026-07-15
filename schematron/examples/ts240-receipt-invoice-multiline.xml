@@ -57,7 +57,7 @@
     </cac:Party>
   </cac:AccountingCustomerParty>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode>54</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode>48</cbc:PaymentMeansCode>
     <cac:CardAccount>
       <cbc:PrimaryAccountNumberID>542418******1234</cbc:PrimaryAccountNumberID>
       <cbc:NetworkID>VISA</cbc:NetworkID>

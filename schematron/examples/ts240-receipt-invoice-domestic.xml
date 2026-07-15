@@ -64,7 +64,7 @@
     </cac:Party>
   </cac:AccountingCustomerParty>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode name="CHIP">54</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode name="CHIP">48</cbc:PaymentMeansCode>
     <cbc:PaymentID>1234</cbc:PaymentID>
     <cac:CardAccount>
       <cbc:PrimaryAccountNumberID>542418******1234</cbc:PrimaryAccountNumberID>

@@ -3935,16 +3935,16 @@
 
 		    <!--ASSERT -->
       <xsl:choose>
-         <xsl:when test="normalize-space(cbc:PaymentMeansCode) = '54'"/>
+         <xsl:when test="normalize-space(cbc:PaymentMeansCode) = '48'"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="normalize-space(cbc:PaymentMeansCode) = '54'">
+                                test="normalize-space(cbc:PaymentMeansCode) = '48'">
                <xsl:attribute name="id">TS240-R-002</xsl:attribute>
                <xsl:attribute name="flag">fatal</xsl:attribute>
                <xsl:attribute name="location">
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
-               <svrl:text>[TS240-R-002]-Payment means code (BT-81) MUST be 54 (credit card) for card transactions — Greiðslumátakóti (BT-81) skal vera 54 (kreditkort) fyrir kortafærslur.</svrl:text>
+               <svrl:text>[TS240-R-002]-Payment means code (BT-81) MUST be 48 (bank card) for card transactions — Greiðslumátakóti (BT-81) skal vera 48 (greiðslukort) fyrir kortafærslur.</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
